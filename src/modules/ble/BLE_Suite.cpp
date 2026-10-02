@@ -3879,7 +3879,7 @@ static String parseManufacturerData(const std::vector<uint8_t> &payload) {
 
 void BLE_Sniffer() {
     // FIX: Always init - handles case where stack was deinit'd by another module
-    BLEStateManager::initBLE("BruceSniffer", ESP_PWR_LVL_P9);
+    BLEStateManager::initBLE("BaldyStore-Sniffer", ESP_PWR_LVL_P9);
     NimBLEScan *pScan = nullptr;
     bool firstRun = true;
     bool redraw = true;
@@ -3906,7 +3906,7 @@ void BLE_Sniffer() {
         bool isSelPressed = check(SelPress);
         if (isSelPressed && snifferPacketCount == 0) {
             if (firstRun) {
-                BLEStateManager::initBLE("BruceSniffer", ESP_PWR_LVL_P9);
+                BLEStateManager::initBLE("BaldyStore-Sniffer", ESP_PWR_LVL_P9);
                 pScan = NimBLEDevice::getScan();
                 if (!pScan) {
                     displayError("Failed to init scanner");
@@ -4157,7 +4157,7 @@ String selectTargetFromScan(const char *title) {
 #endif
 
     // FIX: Always call initBLE - it handles the case where stack was deinit'd
-    if (!BLEStateManager::initBLE("Bruce-Scanner", ESP_PWR_LVL_P9)) {
+    if (!BLEStateManager::initBLE("BaldyStore-Scanner", ESP_PWR_LVL_P9)) {
         displayError("Failed to init BLE");
         return "";
     }
@@ -4910,7 +4910,7 @@ void showWelcomeScreen() {
 
 void BleSuiteMenu() {
     // FIX: Init BLE stack ONCE when entering the suite
-    BLEStateManager::initBLE("Bruce-BLESuite", ESP_PWR_LVL_P9);
+    BLEStateManager::initBLE("BaldyStore-BLESuite", ESP_PWR_LVL_P9);
 
     // Clear data when entering the menu
     scannerData.clear();
@@ -4921,18 +4921,18 @@ void BleSuiteMenu() {
 
     const int MENU_ITEMS = 12;
     const char *menuItems[] = {
-        "Quick Vulnerability Scan",
-        "Deep Device Profiling",
-        "FastPair Attack Suite",
-        "HFP (Hands-Free) Suite",
-        "Audio Suite",
-        "HID Attack Suite",
-        "Memory Corruption Suite",
-        "DoS Attacks",
-        "Payload Delivery",
-        "Testing Tools",
-        "Universal Attack Chain",
-        "BLE Sniffer"
+        "Quick Vuln Scan [Baldy]",
+        "Device Profiling [Baldy]",
+        "FastPair Suite [Baldy]",
+        "HFP Suite [Baldy]",
+        "Audio Suite [Baldy]",
+        "HID Attack [Baldy]",
+        "Memory Suite [Baldy]",
+        "DoS Attacks [Baldy]",
+        "Payload Delivery [Baldy]",
+        "Testing Tools [Baldy]",
+        "Universal Chain [Baldy]",
+        "BLE Sniffer [Baldy]"
     };
 
     int selected = 0, scrollOffset = 0;
@@ -4947,8 +4947,8 @@ void BleSuiteMenu() {
 
             tft.setTextColor(TFT_WHITE, bruceConfig.bgColor);
             tft.setTextSize(2);
-            tft.setCursor((tftWidth - tft.textWidth("BLE SUITE")) / 2, 15);
-            tft.print("BLE SUITE");
+            tft.setCursor((tftWidth - tft.textWidth("BLE SUITE [BALDY]")) / 2, 15);
+            tft.print("BLE SUITE [BALDY]");
             tft.setTextSize(1);
 
             for (int i = 0; i < maxVisible && (scrollOffset + i) < MENU_ITEMS; i++) {
@@ -5049,7 +5049,7 @@ const char *getScanTitle(int attackIndex) {
 
 void executeAttackWithTargetScan(int attackIndex) {
     // FIX: Ensure BLE is initialized for the attack
-    BLEStateManager::initBLE("Bruce-Attack", ESP_PWR_LVL_P9);
+    BLEStateManager::initBLE("BaldyStore-Attack", ESP_PWR_LVL_P9);
 
     String targetInfo = selectTargetFromScan(getScanTitle(attackIndex));
     if (targetInfo.isEmpty()) return;

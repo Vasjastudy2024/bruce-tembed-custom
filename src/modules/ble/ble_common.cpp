@@ -1,4 +1,5 @@
 #include "ble_common.h"
+#include "core/vendor_resolver.h"
 #include "core/mykeyboard.h"
 #include "core/radio_mem.h"
 #include "core/ram_profile.h"
@@ -203,18 +204,11 @@ void ble_scan() {
             const NimBLEAdvertisedDevice *advertisedDevice = foundDevices.getDevice(i);
             if (!advertisedDevice) continue;
 
-            String bt_title = "";
-            String bt_name;
-            String bt_address;
-            String bt_signal;
-
-            bt_name = advertisedDevice->getName().c_str();
-            bt_address = advertisedDevice->getAddress().toString().c_str();
-            bt_signal = String(advertisedDevice->getRSSI());
-
-            if (bt_name.isEmpty()) bt_name = "<no name>";
-            else bt_title = bt_name;
-            if (bt_title.isEmpty()) bt_title = bt_address;
+            String bt_address = advertisedDevice->getAddress().toString().c_str();
+            String bt_signal = String(advertisedDevice->getRSSI());
+            String bt_title = getBLEDeviceDetails(advertisedDevice);
+            String bt_name = advertisedDevice->getName().c_str();
+            if (bt_name.isEmpty()) bt_name = bt_title;
 
             if (options.size() < MAX_DISPLAY_DEVICES) {
                 options.emplace_back(bt_title.c_str(), [=]() { ble_info(bt_name, bt_address, bt_signal); });
@@ -251,7 +245,7 @@ void ble_scan() {
 
 bool initBLEServer() {
     uint64_t chipid = ESP.getEfuseMac();
-    String blename = "Bruce-" + String((uint8_t)(chipid >> 32), HEX);
+    String blename = "BaldyStore-" + String((uint8_t)(chipid >> 32), HEX);
 
     if (!is_ble_inited) {
         BLEDevice::init(blename.c_str());
@@ -306,7 +300,7 @@ void disPlayBLESend() {
     pServer->getAdvertising()->start();
 
     uint64_t chipid = ESP.getEfuseMac();
-    String blename = "Bruce-" + String((uint8_t)(chipid >> 32), HEX);
+    String blename = "BaldyStore-" + String((uint8_t)(chipid >> 32), HEX);
 
     BLEConnected = true;
 

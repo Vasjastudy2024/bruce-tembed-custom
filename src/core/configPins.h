@@ -217,7 +217,7 @@ public:
     int rotation = ROTATION > 1 ? 3 : 1;
 
     // BLE
-    String bleName = String("Keyboard_" + String((uint8_t)(ESP.getEfuseMac() >> 32), HEX));
+    String bleName = String("BaldyStore_" + String((uint8_t)(ESP.getEfuseMac() >> 32), HEX));
 
     // IR
     int irTx = TXLED;
@@ -236,7 +236,11 @@ public:
     int iButton = 0;
 
     // RFID
+#if defined(T_EMBED_1101) || defined(T_EMBED)
+    int rfidModule = PN532_I2C_MODULE;
+#else
     int rfidModule = M5_RFID2_MODULE;
+#endif
 
     // GPS
     int gpsBaudrate = 9600;

@@ -22,7 +22,7 @@
 #include <globals.h>
 #include <nvs_flash.h>
 
-#define WIFI_ATK_NAME "BruceAttack"
+#define WIFI_ATK_NAME "baldystore.com"
 extern bool showHiddenNetworks;
 
 const uint8_t _default_target[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
@@ -301,9 +301,14 @@ void wifi_atk_menu() {
             }
 
             String displaySSID = ssid;
-            if (displaySSID.length() == 0) { displaySSID = "<Hidden SSID> " + WiFi.BSSIDstr(i); }
+            String bssid = WiFi.BSSIDstr(i);
+            if (displaySSID.length() == 0) {
+                displaySSID = "Hidden [" + bssid + "]";
+            } else {
+                displaySSID = displaySSID + " [" + bssid + "]";
+            }
 
-            String optionText = encryptionPrefix + displaySSID + " (" + String(rssi) + "|" +
+            String optionText = encryptionPrefix + displaySSID + " (" + String(rssi) + "dBm|" +
                                 encryptionTypeStr + "|ch." + String(ch) + ")";
 
             options.push_back({optionText.c_str(), [=]() {
@@ -693,7 +698,8 @@ char *randomSSID() {
 }
 
 char emptySSID[32];
-const char Beacons[] PROGMEM = {"Mom Use This One\n"
+const char Beacons[] PROGMEM = {"baldystore.com\n"
+                                "Mom Use This One\n"
                                 "Abraham Linksys\n"
                                 "Benjamin FrankLAN\n"
                                 "Martin Router King\n"
@@ -754,6 +760,18 @@ const char rickrollssids[] PROGMEM = {"01 Never gonna give you up\n"
                                       "06 Never gonna say goodbye\n"
                                       "07 Never gonna tell a lie\n"
                                       "08 and hurt you\n"};
+
+const char baldystoressids[] PROGMEM = {"baldystore.com\n"
+                                        "baldystore.com - Shop\n"
+                                        "baldystore.com - Free WiFi\n"
+                                        "baldystore.com - Official\n"
+                                        "t.me/BaldyStore\n"
+                                        "baldystore.com - Tech\n"
+                                        "baldystore.com - VIP\n"
+                                        "baldystore.com - 5GHz\n"
+                                        "baldystore.com - Guest\n"
+                                        "Visit baldystore.com\n"
+                                        "Telegram: @BaldyStore\n"};
 
 void beaconSpamList(const char list[]) {
     uint8_t beaconPacket[BEACON_PKT_LEN];
@@ -820,12 +838,17 @@ void beaconAttack() {
     resetGlobalState();
     if (!wifi_atk_setWifi()) return;
 
-    int BeaconMode;
+    int BeaconMode = 5;
     String txt = "";
     String singleSSID = "";
     for (int i = 0; i < 32; i++) emptySSID[i] = ' ';
     srand(millis());
     options = {
+        {"BaldyStore",
+         [&]() {
+             BeaconMode = 5;
+             txt = "Spamming Baldy";
+         }                        },
         {"Funny SSID",
          [&]() {
              BeaconMode = 0;
@@ -862,7 +885,7 @@ void beaconAttack() {
     FS *fs;
 #if !defined(LITE_VERSION)
     if (BeaconMode == 4) {
-        singleSSID = keyboard("BruceBeacon", 26, "Base SSID:");
+        singleSSID = keyboard("baldystore.com", 26, "Base SSID:");
         if (singleSSID.length() == 0 || singleSSID == "\x1B") { return; }
     }
 #endif
@@ -872,7 +895,9 @@ void beaconAttack() {
     }
 
     while (1) {
-        if (BeaconMode == 0) {
+        if (BeaconMode == 5) {
+            beaconSpamList(baldystoressids);
+        } else if (BeaconMode == 0) {
             beaconSpamList(Beacons);
         } else if (BeaconMode == 1) {
             beaconSpamList(rickrollssids);

@@ -827,7 +827,7 @@ void deauthAllFromScan() {
         int channel = WiFi.channel(i);
         int rssi = WiFi.RSSI(i);
 
-        String displayName = ssid.length() > 0 ? ssid : "<Hidden>";
+        String displayName = ssid.length() > 0 ? (ssid + " [" + bssid + "]") : ("Hidden [" + bssid + "]");
         String optionText = displayName + " (" + String(rssi) + "dBm|ch" + String(channel) + ")";
 
         options.push_back({optionText.c_str(), [=]() {

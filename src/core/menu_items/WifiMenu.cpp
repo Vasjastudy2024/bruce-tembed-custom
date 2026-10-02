@@ -21,6 +21,7 @@
 #include "modules/pwnagotchi/pwnagotchi.h"
 #include "modules/wifi/channel_analyzer.h"
 #include "modules/wifi/jam_detect.h"
+#include "modules/wifi/tsi_scanner.h"
 #include "modules/wifi/wifi_recover.h"
 #endif
 
@@ -60,6 +61,9 @@ void WifiMenu::optionsMenu() {
         options.push_back({"AP info", displayAPInfo});
     }
     options.push_back({"Wifi Atks", wifi_atk_menu});
+#ifndef LITE_VERSION
+    options.push_back({"TSI Room Scanner", tsi_scanner_menu});
+#endif
     options.push_back({"Evil Portal", [=]() {
                            // WebUI cleanup now handled automatically inside EvilPortal constructor
                            EvilPortal();

@@ -327,14 +327,7 @@ static const int samsung_buds_count = sizeof(samsung_buds_models) / sizeof(samsu
 char randomNameBuffer[32];
 
 const char *generateRandomName() {
-    static const char *promoNames[] = {
-        "baldystore.com",
-        "BaldyStore",
-        "@BaldyStore",
-        "Shop:baldystore",
-        "baldystore.com - Shop"
-    };
-    return promoNames[rand() % (sizeof(promoNames) / sizeof(promoNames[0]))];
+    return "baldystore.com";
 }
 
 void generateRandomMac(uint8_t *mac) {
@@ -682,15 +675,15 @@ static const uint32_t BLE_SPAM_BLINK_MS = 250;
 
 static const BleSpamAttackOption BLE_SPAM_ATTACK_OPTIONS[] = {
 #if !defined(LITE_VERSION)
-    {BLE_SPAM_ATTACK_APPLE_PAIRING,         "Apple Pairing (Baldy)" },
-    {BLE_SPAM_ATTACK_APPLE_ACTION,          "Apple Action (Baldy)"   },
-    {BLE_SPAM_ATTACK_APPLE_NOT_YOUR_DEVICE, "Apple Not Yours (Baldy)"},
+    {BLE_SPAM_ATTACK_APPLE_PAIRING,         "Apple Pairing Prompt" },
+    {BLE_SPAM_ATTACK_APPLE_ACTION,          "Apple Action Modal"   },
+    {BLE_SPAM_ATTACK_APPLE_NOT_YOUR_DEVICE, "Apple Not Your Device"},
 #endif
-    {BLE_SPAM_ATTACK_ANDROID_ALERT,         "Android Alert (Baldy)" },
-    {BLE_SPAM_ATTACK_WINDOWS_SWIFT_PAIR,    "Swift Pair (Baldy)"   },
-    {BLE_SPAM_ATTACK_SAMSUNG,               "Samsung Spam (Baldy)"     },
-    {BLE_SPAM_ATTACK_BLE_BEACON,            "Beacon Spam (Baldy)"      },
-    {BLE_SPAM_ATTACK_RANDOM_ALL,            "Random/All (Baldy)"         }
+    {BLE_SPAM_ATTACK_ANDROID_ALERT,         "Android Device Alert" },
+    {BLE_SPAM_ATTACK_WINDOWS_SWIFT_PAIR,    "Windows Swift Pair"   },
+    {BLE_SPAM_ATTACK_SAMSUNG,               "Samsung BLE Spam"     },
+    {BLE_SPAM_ATTACK_BLE_BEACON,            "BLE Beacon Spam"      },
+    {BLE_SPAM_ATTACK_RANDOM_ALL,            "Random / All"         }
 };
 
 #if !defined(LITE_VERSION)
@@ -707,7 +700,7 @@ struct AppleProximityDevice {
 };
 
 static const AppleProximityDevice APPLE_PROXIMITY_DEVICES[] = {
-    {"BaldyStore AirPods",        0x0E20},
+    {"baldystore.com",            0x0E20},
     {"AirPods Pro",               0x0E20},
     {"AirPods Pro 2nd Gen",       0x1420},
     {"AirPods Pro 2nd Gen USB-C", 0x2420},
@@ -740,6 +733,7 @@ static const int APPLE_PROXIMITY_DEVICE_COUNT =
     sizeof(APPLE_PROXIMITY_DEVICES) / sizeof(APPLE_PROXIMITY_DEVICES[0]);
 
 static const BleSpamAppleDevice BLE_SPAM_APPLE_ACTION_DEVICES[] = {
+    {"baldystore.com",      "AppleTV Setup"     },
     {"Apple TV Setup",      "AppleTV Setup"     },
     {"Setup New Phone",     "Setup New Phone"   },
     {"Transfer Number",     "Transfer Number"   },
@@ -755,27 +749,27 @@ static const BleSpamAppleDevice BLE_SPAM_APPLE_ACTION_DEVICES[] = {
 };
 #endif
 
-static const char *BLE_SPAM_ANDROID_DEVICES[] = {"Pixel Fast Pair", "Generic Android Alert", "Random / All"};
+static const char *BLE_SPAM_ANDROID_DEVICES[] = {
+    "baldystore.com",
+    "Generic Android Alert",
+    "Random / All"
+};
 // Windows: indices 0..3 are presets, 4 = Random/All, 5 = custom name (handled dynamically)
 static const char *BLE_SPAM_WINDOWS_PRESETS[] = {
     "baldystore.com",
-    "BaldyStore - @BaldyStore",
-    "Shop @ baldystore.com",
-    "t.me/BaldyStore",
     "Generic Swift Pair",
-    "Never Gonna Give You Up",
-    "Bill Nye's iPhone",
-    "Skibidi Toilet",
-    "67",
-    "FBI Surveillance Van"
+    "Never Gonna Give You Up"
 };
 
 // BLE Beacon: indices 0..N are presets, then Random/All, then saved custom names, then Add New
 static const char *BLE_SPAM_BEACON_PRESETS[] = {
-    "baldystore.com", "BaldyStore-TG", "Shop-BaldyStore", "t.me-BaldyStore", "NeverGonnaGiveYoUp", "Bill Nye's iPhone", "Skibidi Toilet", "67", "FBISurveillanceVan"
+    "baldystore.com"
 };
 static const char *BLE_SPAM_SAMSUNG_DEVICES[] = {
-    "Galaxy Buds", "Galaxy Watch", "Generic Samsung", "Random / All"
+    "baldystore.com",
+    "Galaxy Watch",
+    "Generic Samsung",
+    "Random / All"
 };
 
 // Special sentinel indices
@@ -1261,14 +1255,7 @@ static void bleSpamFastRandomMac(uint8_t *mac) {
 }
 
 static void bleSpamRandomBeaconName(char *buf) {
-    static const char *beaconNames[] = {
-        "baldystore.com",
-        "BaldyStore-VIP",
-        "BaldyStore-Shop",
-        "t.me-BaldyStore",
-        "BaldyStore-Tech"
-    };
-    strncpy(buf, beaconNames[bleSpamNextRand64() % (sizeof(beaconNames) / sizeof(beaconNames[0]))], 16);
+    strncpy(buf, "baldystore.com", 16);
     buf[16] = '\0';
 }
 
@@ -2207,7 +2194,7 @@ static void bleSpamMenuUi() {
 
     while (true) {
         int attackIndex = bleSpamListLoop(
-            "BLE Spam [BaldyStore]",
+            "BLE Spam",
             bleSpamGetAttackOptionCount(),
             0,
             [](int idx) { return bleSpamGetAttackLabel(idx); },

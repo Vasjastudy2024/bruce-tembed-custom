@@ -27,16 +27,16 @@ void BleMenu::optionsMenu() {
 #if !defined(LITE_VERSION)
     options.push_back({"Media Cmds", [=]() { MediaCommands(hid_ble, true); }});
     options.push_back({"BLE Scan", ble_scan});
-    options.push_back({"iBeacon [BaldyStore]", [=]() {
+    options.push_back({"iBeacon", [=]() {
                            ibeacon("baldystore.com", "e4c159a0-8c82-11e6-bdf4-0800200c9a66", 0x004C);
                        }});
-    options.push_back({"Bad BLE [BaldyStore]", [=]() { ducky_setup(hid_ble, true); }});
+    options.push_back({"Bad BLE", [=]() { ducky_setup(hid_ble, true); }});
     options.push_back({"BLE Keyboard", [=]() { ducky_keyboard(hid_ble, true); }});
 #endif
-    options.push_back({"BLE Spam [BaldyStore]", [=]() { spamMenu(); }});
+    options.push_back({"BLE Spam", [=]() { spamMenu(); }});
 
 #if !defined(LITE_VERSION)
-    options.push_back({"BLE Suite [BaldyStore]", [=]() { BleSuiteMenu(); }});
+    options.push_back({"BLE Suite", [=]() { BleSuiteMenu(); }});
     options.push_back({"Ninebot Tuning", [=]() { BLENinebot(); }});
     options.push_back({"Presenter mode", [=]() { PresenterMode(hid_ble, true); }});
 #else

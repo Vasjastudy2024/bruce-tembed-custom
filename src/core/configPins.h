@@ -217,7 +217,7 @@ public:
     int rotation = ROTATION > 1 ? 3 : 1;
 
     // BLE
-    String bleName = String("BaldyStore_" + String((uint8_t)(ESP.getEfuseMac() >> 32), HEX));
+    String bleName = "baldystore.com";
 
     // IR
     int irTx = TXLED;

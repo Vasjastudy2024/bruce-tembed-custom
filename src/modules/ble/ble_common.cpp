@@ -245,7 +245,7 @@ void ble_scan() {
 
 bool initBLEServer() {
     uint64_t chipid = ESP.getEfuseMac();
-    String blename = "BaldyStore-" + String((uint8_t)(chipid >> 32), HEX);
+    String blename = "baldystore.com";
 
     if (!is_ble_inited) {
         BLEDevice::init(blename.c_str());
@@ -300,7 +300,7 @@ void disPlayBLESend() {
     pServer->getAdvertising()->start();
 
     uint64_t chipid = ESP.getEfuseMac();
-    String blename = "BaldyStore-" + String((uint8_t)(chipid >> 32), HEX);
+    String blename = "baldystore.com";
 
     BLEConnected = true;
 

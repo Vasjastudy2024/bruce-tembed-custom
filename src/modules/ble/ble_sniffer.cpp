@@ -114,7 +114,7 @@ void BLE_Sniffer() {
             isCapturing = !isCapturing;
             if (isCapturing) {
                 if (firstRun) {
-                    NimBLEDevice::init("BaldyStore-Sniffer");
+                    NimBLEDevice::init("baldystore.com");
                     vTaskDelay(10 / portTICK_PERIOD_MS);
                     pSnifferScan = NimBLEDevice::getScan();
                     if (!pSnifferScan) {
